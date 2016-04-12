@@ -26,7 +26,7 @@ I don't currently plan to spend time documenting this stuff because:
  1. Honestly, modern OCR software already has decent language modeling for commonly-used languages baked in, so for typical OCR needs in industry, the marginal utility of a post-processing system like this is small.
  2. This particular system is complicated and difficult to use. There are a lot of hyperparameters.
 
-However, if you have text data with OCR errors (and an error-free training corpus that is better-matched to the OCR text than the OCR system's language model training), then maybe Headword will be of use to you. In that case, feel free to get in touch.
+However, if you have text data with OCR errors (and an error-free training corpus that is better-matched to the OCR text than the OCR system's language model training), then maybe Headword will be of use to you. In that case, feel free to get in touch for assistance.
 
 ## License
 

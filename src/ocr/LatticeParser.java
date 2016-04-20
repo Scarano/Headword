@@ -37,6 +37,9 @@ public class LatticeParser {
 		public void saveModel(String fileName);
 	}
 	
+	/* For debugging & testing only.
+	 * LetterScorer assumes every word is a letter (a sentence might be "c b a d"), and assigns
+	 * log prob proportional to ord(head) - ord(arg). */
 	static class LetterScorer implements Scorer {
 		@Override
 		public double scoreTrapezoid(Edge[] edges, int h, int a, int q, int id) {

@@ -6,13 +6,13 @@ It's about 75% Java and 25% Groovy.
 
 ## The Parser
 
-The component most likely to be of use to others is the parser (`ocr/LatticeParser.java`). Although it's in the `ocr` directory with everything else, it is well-factored and not coupled with the non-parsing-related code.
+The component most likely to be of use to others is the parser ([`ocr/LatticeParser.java`](src/ocr/LatticeParser.java)). Although it's in the `ocr` directory with everything else, it is well-factored and not coupled with the non-parsing-related code.
 
-The Headword parser uses a lattice-generalized version of Eisner and Satta's (1999) parsing algorithm to perform probabilistic dependency parsing on a weighted lattice. Among other things, it can output the highest-likelihood parse among all sentences in the lattice. It parses ordinary token sequences as well, by encoding them as trivial (single-path) lattices.
+The Headword parser uses a lattice-generalized version of Eisner and Satta's (1999) parsing algorithm to perform probabilistic dependency parsing on a weighted lattice. Among other things, it can output the highest-likelihood parse among all sentences in the lattice. It parses ordinary token sequences as well, by encoding them as trivial (single-path) lattices. The running time is cubic in the number of lattice edges.
 
-It uses the Dependency Model with Valence (Klein and Manning, 2004) to estimate probabilities. It can be trained using Klein and Manning's expectation maximization procedure or Smith and Eisner's (2005) contrastive estimation procedure. Like other DMV-based parsers, it relies on part-of-speech tags to reduce data sparsity. Its input can be either 1) part-of-speech tag sequences, or 2) word sequences, plus a file that defines the mapping from words to tags. (The latter are typically automatically induced word clusters, the next-best thing when annotated POS sequences are unavailable.) In addition to using only the tag sequences, it can use a word/tag-interpolated model (see description in thesis), which is useful for language modeling (it out-performed the n-gram model in the OCR correction task).
+It uses the Dependency Model with Valence (Klein and Manning, 2004) to estimate probabilities. It can be trained using Klein and Manning's expectation maximization procedure or Smith and Eisner's (2005) contrastive estimation procedure. Like other DMV-based parsers, it relies on part-of-speech tags to reduce data sparsity. Its input can be either 1) part-of-speech tag sequences, or 2) word sequences, plus a file that defines the mapping from words to tags. (The latter may be automatically induced word clusters, if annotated POS sequences are unavailable.) In addition to using only the tag sequences, it can use a word/tag-interpolated model (see description in thesis), which is useful for language modeling (it out-performed the n-gram model in the OCR correction task).
 
-Empirically, the Headword parser is many times faster than [Dageem](https://github.com/shaybcohen/jdageem) by Shay Cohen, both in training and parsing (I don't know why). Dageem, however, includes support for minimum Bayes risk decoding (mine only does Viterbi) and a more advanced training procedure. Embarrassingly, Headword depends on the Dageem jar because it uses Dageem's implementation of the DMV's "harmonic" initializer, to save me the trouble of duplicating and testing that logic.
+The Headword parser seems to be many times faster than [Dageem](https://github.com/shaybcohen/jdageem) by Shay Cohen, both in training and parsing (not sure why). Dageem, however, includes support for minimum Bayes risk decoding (mine only does Viterbi). Embarrassingly, Headword depends on the Dageem jar because it uses Dageem's implementation of the DMV's "harmonic" initializer, to save me the trouble of duplicating and testing that logic.
 
 ### Usage
 
@@ -23,10 +23,10 @@ This is an Eclipse project. I haven't yet set it up to compile with Ant or Gradl
 ## The rest of the OCR error correction system
 
 I don't currently plan to spend time documenting this stuff because:
- 1. Honestly, modern OCR software already has decent language modeling for commonly-used languages baked in, so for typical OCR needs in industry, the marginal utility of a post-processing system like this is small.
- 2. This particular system is complicated and difficult to use. There are a lot of hyperparameters.
+ 1. Honestly, modern OCR software already has decent language modeling for commonly-used languages baked in, so for your typical practical OCR needs, the marginal utility of a post-processing system like this is small.
+ 2. This particular system is complicated and therefore difficult to use. There are a lot of hyperparameters.
 
-However, if you have text data with OCR errors (and an error-free training corpus that is better-matched to the OCR text than the OCR system's language model training), then maybe Headword will be of use to you. In that case, feel free to get in touch for assistance.
+However, if you have text data with OCR errors _and_ an error-free training corpus that is better-matched to the OCR text than the OCR system's language model training, then _maybe_ Headword will be of use to you. In that case, feel free to get in touch for assistance.
 
 ## License
 

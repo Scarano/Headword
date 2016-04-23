@@ -123,39 +123,19 @@ for c in 100 150 200; do
   done;
 done
 
-# -- combined clustering, with tesseract OCR and PTB tokenization (v6) --------------
+# -- combined clustering, with ABBYY OCR and PTB tokenization (v8) --------------
 
-#java -server -Xmx4G -cp ~/Dropbox/programs/workspace/Thesis/bin:/Users/sam/src/jdageem-1.0/lib/colt.jar:/Users/sam/src/jdageem-1.0/lib/commons-cli-1.2.jar:/Users/sam/src/jdageem-1.0/lib/commons-math-2.2.jar:/Users/sam/src/jdageem-1.0/lib/pcollections-2.1.2.jar:/Users/sam/src/jdageem-1.0/lib/trove.jar:/Applications/eclipse/plugins/org.codehaus.groovy_2.0.7.xx-20130703-1600-e43-RELEASE/lib/groovy-all-2.0.7.jar:/home/sam/thesis/code/gprof-0.3.0-groovy-2.1.jar:/Users/sam/thesis/code/commons-csv-1.1/commons-csv-1.1.jar ocr.scripts.RetokenizePTB train.1to999.ip.parses train.1to999.ip.retokenized
+# Start by copying v7/clustering
 
-# Replace PTB quotes with UNICODE quote chars
-for x in train.1to10 train.1to999 dev.1to10 dev.1to999; do ~/bin/runjava.sh ocr.scripts.RetokenizePTB  $x.ip.parses $x.ip.retok; done
+mkdir grammar
 
-date; for c in 67 100 150 200; do time ~/src/brown-cluster-master/wcluster --text train.1to999.ip.retok.text --min-occur 2 --c $c --rand 0 --threads 1 & done
+# CE training with combined clustering
+for c in 100 150 200; do for s in 4to10; do for n in error trans; do f=model.prose.$s.c$c.ce$n.unif; date; time $JAVA edu.neu.ccs.headword.DMVCE clustering/prose.train.$s.c$c.txt -vocab clustering/combined-c$c-p1.out/vocab.txt -hood $n -parallel 2 grammar/$f. 0 800  >grammar/$f.log ; done ; done; done; date
+for c in 100 150 200; do for s in 4to10; do for n in error trans; do f=model.prose.$s.c$c.ce$n.har; date; time $JAVA edu.neu.ccs.headword.DMVCE clustering/prose.train.$s.c$c.txt -vocab clustering/combined-c$c-p1.out/vocab.txt -hood $n -parallel 2 grammar/$f. -input-model harmonic 0 800  >grammar/$f.log ; done ; done; done; date
 
-# Process transcription files, including sentence-breaking, tokenization, and de-hyphenization
-cd wwp
-for x in text.clean/*.txt; do echo $x; $JAVA ocr.scripts.SentenceFinder $x ${x%.txt}.sentences; done
-for x in text.clean/*.sentences; do echo $x; $JAVA -Xmx3g ocr.PTBLikeTokenizer $x ${x%sentences}ptbtokens; done
-$JAVA -Xmx2G ocr.scripts.BuildSets -tokensuffix .ptbtokens prose.set.txt prose text.clean
-for l in 15 30 50; do $JAVA  ocr.scripts.FilterByLength prose.train.deh.txt prose.train.1to$l.deh.txt 1 $l; done
-cd ..
 
-mkdir clustering
-cat ptb/train.1to999.ip.retok.text wwp/prose.train.deh.lc.txt > clustering/combined.txt
-
-# Find word clusters (a few minutes)
-cd clustering
-date; for c in 100 150 200; do
-	(
-		time $WCLUSTER --text combined.txt --min-occur 2 --c $c --rand 0 --threads 1
-		$JAVA -Xmx4G ocr.scripts.ClusteringVocab -add-root combined-c$c-p1.out/paths combined-c$c-p1.out/vocab.txt
-	)&
-done
-wait
-cd ..
-
-# generate versions of corpus with clusters substituted for words
-for c in 100 150 200; do $JAVA -Xmx4G ocr.Clustering clustering/combined-c$c-p1.out/paths wwp/prose.train.deh.lc.txt clustering/prose.train.4to10.c$c.txt 4 10 -cl; done
+####
+####
 
 # Train DMV structured tag language models with EM (several minutes)
 # (Note that PTB-trained models are already trained by ptb/train.sh.)

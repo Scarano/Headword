@@ -6,7 +6,7 @@ It's about 75% Java and 25% Groovy.
 
 ## The Parser
 
-The component most likely to be of use to others is the parser ([`ocr/LatticeParser.java`](src/ocr/LatticeParser.java)). Although it's in the `ocr` directory with everything else, it is well-factored and not coupled with the non-parsing-related code.
+The component most likely to be of use to others is the parser ([`LatticeParser.java`](src/edu/neu/ccs/headword/LatticeParser.java)). Although the parsing code is mixed into the same directory as everything else, it is well-factored and not coupled with the non-parsing-related code.
 
 The Headword parser uses a lattice-generalized version of Eisner and Satta's (1999) parsing algorithm to perform probabilistic dependency parsing on a weighted lattice. Among other things, it can output the highest-likelihood parse among all sentences in the lattice. It parses ordinary token sequences as well, by encoding them as trivial (single-path) lattices.
 

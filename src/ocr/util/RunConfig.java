@@ -1,4 +1,4 @@
-package ocr;
+package ocr.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ocr.RunConfigGroup.Variable;
+import ocr.util.RunConfigGroup.Variable;
 
 public class RunConfig {
 	public static final String DATA_ROOT_KEY = "data-root";
@@ -32,6 +32,10 @@ public class RunConfig {
 		this.group = group;
 		this.variation = variation;
 		
+	}
+	
+	public RunConfigGroup getGroup() {
+		return group;
 	}
 	
 	public int getVariation() {

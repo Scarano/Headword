@@ -2,6 +2,8 @@ package ocr;
 
 import java.util.Arrays;
 
+import ocr.util.Util;
+
 public class SentenceCandidate {
 	
 	private static final double LN_10 = Math.log(10);

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import ocr.util.GUtil;
+
 public class Vocabulary implements Iterable<String> {
 	
 	private ArrayList<String> wordStrings = new ArrayList<String>();

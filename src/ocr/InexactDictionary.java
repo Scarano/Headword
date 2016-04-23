@@ -10,7 +10,9 @@ import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import ocr.Counter.Count;
+import ocr.util.Counter;
+import ocr.util.TopNList;
+import ocr.util.Counter.Count;
 
 public class InexactDictionary {
 	

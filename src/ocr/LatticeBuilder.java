@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import ocr.SimpleTokenizer.Token;
-import ocr.TopNList.ScoredItem;
+import ocr.util.RunConfig;
+import ocr.util.TopNList;
+import ocr.util.TopNList.ScoredItem;
 
 public class LatticeBuilder {
 	
@@ -85,7 +87,7 @@ public class LatticeBuilder {
 					topCandidates.add(candidate, prob);
 				}
 				
-				for (ScoredItem<String> candidate: topCandidates.items)
+				for (ScoredItem<String> candidate: topCandidates.scoredItemSet())
 					lattice.addEdge(start, end, candidate.item, candidate.score);
 
 				// If we haven't hit the token-merging limit yet, then add another input token 

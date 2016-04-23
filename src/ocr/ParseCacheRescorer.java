@@ -2,6 +2,8 @@ package ocr;
 
 import java.io.IOException;
 
+import ocr.util.RunConfig;
+
 public class ParseCacheRescorer implements Rescorer {
 	RunConfig config;
 	boolean caseless;

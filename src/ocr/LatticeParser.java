@@ -20,6 +20,8 @@ import ocr.TaggedLattice.Edge;
 import ocr.TaggedLattice.StringToken;
 import ocr.TaggedLattice.TaggedToken;
 import ocr.util.CommandLineParser;
+import ocr.util.RunConfig;
+import ocr.util.Util;
 
 public class LatticeParser {
 	protected static final int LEFT = 0;

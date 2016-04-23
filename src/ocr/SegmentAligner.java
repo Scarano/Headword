@@ -1,5 +1,7 @@
 package ocr;
 
+import static ocr.util.Util.logSum;
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.LinkedList;
@@ -7,7 +9,8 @@ import java.util.List;
 
 import ocr.Alignment.AlignedLine;
 import ocr.Alignment.Segment;
-import static ocr.Util.logSum;
+import ocr.util.Counter;
+import ocr.util.RunConfig;
 
 public class SegmentAligner {
 	

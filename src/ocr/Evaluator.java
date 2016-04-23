@@ -13,7 +13,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import ocr.Counter.Count;
+import ocr.util.Counter;
+import ocr.util.RunConfig;
+import ocr.util.Counter.Count;
 
 public class Evaluator {
 	
@@ -246,7 +248,7 @@ public class Evaluator {
 		public String toString() {
 			try {
 				return "Run #" + config.getVariation() + "/"
-					+ config.group.getNumVariations() + ": "
+					+ config.getGroup().getNumVariations() + ": "
 					+ config.getDescription();
 			}
 			catch (Exception e) {

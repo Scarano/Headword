@@ -13,6 +13,7 @@ import org.codehaus.groovy.control.ErrorCollector;
 import ocr.LatticeParser.DMVScorer
 import ocr.LatticeParser.DMVGrammarScorer
 import ocr.util.CommandLineParser
+import ocr.util.Util;
 
 class CorrectionComparison {
 	

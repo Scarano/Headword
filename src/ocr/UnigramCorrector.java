@@ -3,7 +3,8 @@ package ocr;
 import java.util.Iterator;
 
 import ocr.NGramModel.TokenHistory;
-import ocr.Util;
+import ocr.util.TopNList;
+import ocr.util.Util;
 
 public class UnigramCorrector {
 

@@ -11,6 +11,7 @@ import java.util.List;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.process.CoreLabelTokenFactory;
 import edu.stanford.nlp.process.PTBTokenizer;
+import ocr.util.Util;
 
 public class PTBLikeTokenizer implements Tokenizer {
 	

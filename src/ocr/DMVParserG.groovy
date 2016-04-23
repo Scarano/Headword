@@ -1,8 +1,10 @@
 package ocr
 
-import static ocr.Util.nvl
+import static ocr.util.Util.nvl;
+
 import ocr.StringLattice.Edge;
-import ocr.util.CommandLineParser;
+import ocr.util.CommandLineParser
+import ocr.util.Util;;
 
 class DMVParserG {
 	static boolean debug = false

@@ -1,4 +1,4 @@
-package ocr;
+package ocr.util;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -16,8 +16,9 @@ public class TopNList<T extends Comparable<T>> implements Iterable<T> {
 	public static class ScoredItem<T extends Comparable<T>>
 		implements Comparable<ScoredItem<T>>
 	{
-		T item;
-		double score;
+		public T item;
+		public double score;
+		
 		public ScoredItem(T item, double score) {
 			this.item = item;
 			this.score = score;
@@ -81,6 +82,10 @@ public class TopNList<T extends Comparable<T>> implements Iterable<T> {
 
 	public Iterator<ScoredItem<T>> scoredItems() {
 		 return items.descendingIterator();
+	}
+	
+	public Iterable<ScoredItem<T>> scoredItemSet() {
+		return items;
 	}
 
 	public static void main(String[] args) {

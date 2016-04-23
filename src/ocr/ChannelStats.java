@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 
 import ocr.Alignment.AlignedLine;
 import ocr.Alignment.Segment;
-import ocr.Counter.Count;
+import ocr.util.Counter.Count;
 
 public class ChannelStats {
 	

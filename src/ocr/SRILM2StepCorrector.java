@@ -13,8 +13,11 @@ import java.util.HashSet;
 import java.util.List;
 
 import ocr.StringLattice.Edge;
+import ocr.util.Log;
+import ocr.util.PhaseTimer;
+import ocr.util.RunConfig;
+import ocr.util.Util;
 import ocr.SimpleTokenizer.Token;
-import ocr.Util;
 
 
 /**

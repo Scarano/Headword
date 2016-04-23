@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import ocr.util.Util;
+
 public class NGramLanguageModel {
 	
 	private static final boolean DEBUG = false;

@@ -1,6 +1,6 @@
 package ocr;
 
-import static ocr.Util.logSum;
+import static ocr.util.Util.logSum;
 
 import org.apache.commons.math.util.FastMath;
 

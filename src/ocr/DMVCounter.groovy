@@ -9,7 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import ocr.DMVGrammar.Bigram;
+import ocr.DMVGrammar.Bigram
+import ocr.util.Util;
+
 import static ocr.DMVGrammar.stopContinueIndex
 
 @CompileStatic

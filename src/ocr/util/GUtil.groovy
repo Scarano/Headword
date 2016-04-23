@@ -1,4 +1,4 @@
-package ocr
+package ocr.util
 
 
 class GUtil {

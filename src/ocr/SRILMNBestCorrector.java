@@ -13,7 +13,10 @@ import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 import ocr.SimpleTokenizer.Token;
-import ocr.Util;
+import ocr.util.Log;
+import ocr.util.PhaseTimer;
+import ocr.util.RunConfig;
+import ocr.util.Util;
 
 public class SRILMNBestCorrector implements Corrector {
 	

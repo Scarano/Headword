@@ -1,10 +1,12 @@
 package ocr;
 
+import static ocr.util.Util.nvl;
+
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import static ocr.Util.nvl;
+import ocr.util.Counter;
 
 public class NGramModel {
 	

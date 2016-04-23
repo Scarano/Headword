@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import ocr.Alignment.Segment;
+import ocr.util.RunConfig;
 
 public class InterpolatedSegmentModel implements SegmentModel {
 	

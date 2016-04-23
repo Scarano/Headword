@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import ocr.util.CommandLineParser;
+import ocr.util.CommandLineParser
+import ocr.util.RunConfig
 
 class Clustering {
 	

@@ -1,6 +1,6 @@
 package ocr
 
-import static ocr.Util.nvl
+import static ocr.util.Util.nvl;
 
 import java.io.File;
 import java.io.IOException;

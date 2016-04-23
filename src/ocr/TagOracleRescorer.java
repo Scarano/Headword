@@ -3,6 +3,8 @@ package ocr;
 import java.io.IOException;
 import java.util.List;
 
+import ocr.util.RunConfig;
+
 public class TagOracleRescorer implements Rescorer {
 	String[][] correctTags;
 	Clustering clustering;

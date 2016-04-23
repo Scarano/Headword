@@ -1,13 +1,14 @@
-package ocr;
+package ocr.util;
 
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-class Counter<T> implements Iterable<Entry<T, Counter.Count>> {
-	static class Count {
+public class Counter<T> implements Iterable<Entry<T, Counter.Count>> {
+	public static class Count {
 		public double value;
 		
 		public Count(double value) {
@@ -53,6 +54,10 @@ class Counter<T> implements Iterable<Entry<T, Counter.Count>> {
 			return null;
 		else
 			return count.value;
+	}
+	
+	public Map<T, Count> countMap() {
+		return counts;
 	}
 	
 	public Set<Entry<T, Count>> entries() {

@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import cern.colt.Arrays;
 import ocr.LatticeParser.DMVScorer;
+import ocr.util.RunConfig;
 
 public class ParseRescorer implements Rescorer {
 	RunConfig config;

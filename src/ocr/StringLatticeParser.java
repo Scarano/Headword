@@ -16,6 +16,7 @@ import org.apache.commons.math.util.FastMath;
 
 import ocr.StringLattice.Edge;
 import ocr.util.CommandLineParser;
+import ocr.util.Util;
 
 public class StringLatticeParser {
 	protected static final int LEFT = 0;

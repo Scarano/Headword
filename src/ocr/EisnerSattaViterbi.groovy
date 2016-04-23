@@ -1,6 +1,7 @@
 package ocr
 
-import static ocr.Util.nvl
+import static ocr.util.Util.nvl;
+
 import ocr.util.CommandLineParser;
 
 class EisnerSattaViterbi {

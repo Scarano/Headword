@@ -10,11 +10,13 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import ocr.Counter.Count;
 import ocr.LatticeParser.DMVVectorScorer;
 import ocr.NGramLanguageModel.NGram;
 import ocr.ParsedCorpus.ParsedSentence;
 import ocr.util.CommandLineParser;
+import ocr.util.Counter;
+import ocr.util.Util;
+import ocr.util.Counter.Count;
 
 public class StructuredBigramModel {
 	
@@ -295,7 +297,7 @@ public class StructuredBigramModel {
 					directed ? " directed" : "");
 					
 			List<String> vocab = new ArrayList<String>();
-			for (NGram bigram: structModel.nGramCounts.counts.keySet())
+			for (NGram bigram: structModel.nGramCounts.countMap().keySet())
 				if (bigram.words.length == 1)
 					vocab.add(bigram.words[0]);
 			

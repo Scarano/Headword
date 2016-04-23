@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ocr.SimpleTokenizer.Token;
-import ocr.Util;
+import ocr.util.Log;
+import ocr.util.PhaseTimer;
+import ocr.util.RunConfig;
+import ocr.util.Util;
 
 public class ParserCorrector implements Corrector {
 	

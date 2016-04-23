@@ -8,13 +8,16 @@ import java.util.Map;
 import java.util.Random;
 
 import static java.lang.System.arraycopy;
+import static ocr.util.GUtil.loadUtf8Lines;
+
 import edu.stanford.nlp.optimization.DiffFunction;
 import edu.stanford.nlp.optimization.QNMinimizer;
-import ocr.Counter.Count;
 import ocr.DMVCE.NeighborhoodFunction;
 import ocr.LatticeParser.DMVVectorScorer;
 import ocr.util.CommandLineParser;
-import static ocr.GUtil.loadUtf8Lines;
+import ocr.util.Counter;
+import ocr.util.Util;
+import ocr.util.Counter.Count;
 
 class OCRCE {
 	static boolean debug = false;

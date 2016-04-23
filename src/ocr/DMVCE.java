@@ -11,12 +11,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.arraycopy;
+import static ocr.util.GUtil.loadUtf8Lines;
+
 import edu.stanford.nlp.optimization.DiffFunction;
 import edu.stanford.nlp.optimization.QNMinimizer;
-import ocr.Counter.Count;
 import ocr.LatticeParser.DMVVectorScorer;
 import ocr.util.CommandLineParser;
-import static ocr.GUtil.loadUtf8Lines;
+import ocr.util.Counter;
+import ocr.util.Util;
+import ocr.util.Counter.Count;
 
 class DMVCE {
 	static boolean debug = false;

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import ocr.util.Counter;
+
 public interface ConditionalModel<E, C> {
 	
 	public double prob(C context, E event);

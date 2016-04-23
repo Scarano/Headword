@@ -20,6 +20,8 @@ import edu.cmu.cs.lti.ark.dageem.EisnerSattaChart;
 import edu.cmu.cs.lti.ark.dageem.GoalTerm;
 import edu.cmu.cs.lti.ark.dageem.SentenceCorpus;
 import edu.cmu.cs.lti.ark.dageem.SentenceDocument;
+import ocr.util.RunConfig;
+import ocr.util.Util;
 
 public class ParseCache {
 	

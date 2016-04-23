@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import ocr.util.CommandLineParser;
+import ocr.util.GUtil;
 
 public class WindowedAligner {
 	

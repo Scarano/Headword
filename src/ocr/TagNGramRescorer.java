@@ -2,6 +2,9 @@ package ocr;
 
 import java.io.IOException;
 
+import ocr.util.RunConfig;
+import ocr.util.Util;
+
 public class TagNGramRescorer implements Rescorer {
 	private static final boolean DEBUG = false;
 	

@@ -1,4 +1,4 @@
-package ocr;
+package ocr.util;
 
 import java.util.List;
 import java.util.Random;
@@ -7,7 +7,7 @@ import org.apache.commons.math.util.FastMath;
 
 public class Util {
 
-	static double nvl(Double x, double defaultVal) {
+	public static double nvl(Double x, double defaultVal) {
 		if (x == null)
 			return defaultVal;
 		else
@@ -33,11 +33,11 @@ public class Util {
 	    }
 	}
 
-	static double mixInLogSpace(double loga, double logb, double lambda) {
+	public static double mixInLogSpace(double loga, double logb, double lambda) {
 		return logSum(loga + Math.log(1-lambda), logb + Math.log(lambda));
 	}
 	
-	static void mixInLogSpaceTest() {
+	public static void mixInLogSpaceTest() {
 		for (double a: new double[] {0, 0.5, 1}) {
 			for (double b: new double[] {0, 0.5, 1}) {
 				for (double lambda: new double[] {0.1, 0.5, 0.9}) {
@@ -57,7 +57,7 @@ public class Util {
 		}
 	}
 
-	static void normalize(double[] dist) {
+	public static void normalize(double[] dist) {
 		double sum = 0.0;
 		for (int i = 0; i < dist.length; i++)
 			sum += dist[i];
@@ -65,7 +65,7 @@ public class Util {
 			dist[i] = dist[i] / sum;
 	}
 	
-	static int sampleMultinomial(double[] dist, Random random) {
+	public static int sampleMultinomial(double[] dist, Random random) {
 		double y = random.nextDouble();
 		double acc = 0.0;
 		for (int i = 0; i < dist.length - 1; i++) {

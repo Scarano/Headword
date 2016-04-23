@@ -1,5 +1,7 @@
 package ocr;
 
+import static ocr.util.Util.nvl;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,8 +20,9 @@ import java.util.Map.Entry;
 
 import ocr.Alignment.AlignedLine;
 import ocr.Alignment.Segment;
-import ocr.Counter.Count;
-import static ocr.Util.nvl;
+import ocr.util.Counter;
+import ocr.util.RunConfig;
+import ocr.util.Counter.Count;
 
 public class MergeSplitSegmentModel implements SegmentModel {
 

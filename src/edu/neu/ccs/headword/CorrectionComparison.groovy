@@ -8,12 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.codehaus.groovy.control.ErrorCollector;
+import org.apache.commons.math.stat.inference.TTestImpl
 
-import edu.neu.ccs.headword.LatticeParser.DMVScorer
-import edu.neu.ccs.headword.LatticeParser.DMVGrammarScorer
 import edu.neu.ccs.headword.util.CommandLineParser
-import edu.neu.ccs.headword.util.Util;
+import edu.neu.ccs.headword.util.Util
 
 class CorrectionComparison {
 	
@@ -28,10 +26,10 @@ class CorrectionComparison {
 	List<CorrectionPair> goodLines = []
 	List<CorrectionPair> badLines = []
 	
+	List<Double> pairedErrors = [[], []]
+	
 	def add(File baselineFile, File testFile) {
 		
-		def baselineAnalysis = new CorrectionAnalysis(baselineFile)
-
 		baselineFile.withReader("utf-8") { baseReader ->
 			testFile.withReader("utf-8") { testReader ->
 				while (baseReader.ready()) {
@@ -56,6 +54,9 @@ class CorrectionComparison {
 						badLines << new CorrectionPair(trans, ocr, baseCorr, testCorr)
 					else if (testErrors > baseErrors)
 						goodLines << new CorrectionPair(trans, ocr, baseCorr, testCorr)
+						
+					pairedErrors[0] << baseErrors
+					pairedErrors[1] << testErrors
 				}
 			}
 		}
@@ -102,18 +103,13 @@ class CorrectionComparison {
 			printf("OCR WER: %f\n", totalOCRErrors[i] / totalTokens[i])
 			println()
 		}
+		
+		println("Two-tailed paired t-test:")
+		println("p < " + (new TTestImpl()).pairedTTest(comparison.pairedErrors[0] as double[],
+		                                               comparison.pairedErrors[1] as double[]))
+		println()
 	}
 	
-	static signTest(wins, losses) {
-		double n = wins + losses
-		double p = 0
-		for (double i = 0; i < wins; i++) {
-			p += Util.combination(n, i)
-//			println p
-		}
-//		println new BigDecimal(2).pow(n)
-		2*(1 - p/Math.pow(2, n))
-	}
 }
 
 

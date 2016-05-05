@@ -224,6 +224,11 @@ public class SimpleTokenizer implements Tokenizer {
 		return hyphenPattern.matcher(s).replaceAll("");
 	}
 	
+	static final Pattern hyphenLikePattern = Pattern.compile("\\s*[\\-\u00ad\u2014]\\s*");
+	public static String hyphenNormalized(String s) {
+		return hyphenLikePattern.matcher(s).replaceAll("");
+	}
+	
 	public static void main(String[] args) throws Exception {
 		if (args[0].equals("-test")) {
 			test();

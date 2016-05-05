@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.codehaus.groovy.control.ErrorCollector;
-
 import edu.neu.ccs.headword.LatticeParser.DMVScorer
 import edu.neu.ccs.headword.LatticeParser.DMVGrammarScorer
 import edu.neu.ccs.headword.util.CommandLineParser

@@ -6,20 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.codehaus.groovy.control.ErrorCollector;
-
-import edu.neu.ccs.headword.LatticeParser.DMVScorer
-import edu.neu.ccs.headword.LatticeParser.DMVGrammarScorer
 import edu.neu.ccs.headword.util.CommandLineParser
 import edu.neu.ccs.headword.util.Util;
 
-class CorrectionAnalysis {
+class CorrectionFile {
 	
 	def ocrSentences = []
 	def transSentences = []
 	def corrSentences = []
 	
-	CorrectionAnalysis(File corrFile) {
+	CorrectionFile(File corrFile) {
 		def lines = []
 		corrFile.eachLine("utf-8") { lines << it }
 		lines.collate(4).each { group ->
@@ -89,8 +85,8 @@ class CorrectionAnalysis {
 		[baselines, tests].transpose().each { baseline, test ->
 			println "Testing $test"
 		
-			def baseErrors = new CorrectionAnalysis(new File(baseline)).errorsBySentence()
-			def testErrors = new CorrectionAnalysis(new File(test)).errorsBySentence()
+			def baseErrors = new CorrectionFile(new File(baseline)).errorsBySentence()
+			def testErrors = new CorrectionFile(new File(test)).errorsBySentence()
 			
 			def baseErrorCount = baseErrors.inject(0) { a, b -> a + b }
 			def testErrorCount = testErrors.inject(0) { a, b -> a + b }

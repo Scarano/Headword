@@ -40,7 +40,12 @@ outputDirs.each { outputDir ->
 	}
 	
 	def score = measure.startsWith("rel") ? 1.0D : 0.0D
-	new File(new File(outputDir), "log.txt").eachLine { line ->
+	
+	def logFile = new File(new File(outputDir), "revised-score.txt")
+	if (!logFile.exists())
+		logFile = new File(new File(outputDir), "log.txt")
+		
+	logFile.eachLine { line ->
 		if (measure == "WER") {
 			m = line =~ /Corrected WER: ([\.\-\d]+)/
 			if (m) {

@@ -7,15 +7,16 @@ import edu.neu.ccs.headword.util.CommandLineParser
 class SubmitJob {
 
 	static main(args) {
-		def clp = new CommandLineParser("-bsub -dry -parallel=i -overrides=s", args)
+		def clp = new CommandLineParser("-bsub -dry -parallel=i -queue=s -overrides=s", args)
 		def bsub = clp.opt("-bsub")
 		def dry = clp.opt("-dry")
 		def parallel = clp.opt("-parallel", 1)
+		def queue = clp.opt("-queue", "ser-par-10g")
 		def config = new File(clp.arg(0))
 		def outputDir = new File(clp.arg(1))
 		
 		def overrides = []
-		def overridesStr = clp.opt("-overrides", null)
+		String overridesStr = clp.opt("-overrides", null)
 		if (overridesStr != null) {
 			overridesStr = overridesStr.replaceAll(/_/, ' ')
 			println "overrides: $overridesStr"
@@ -24,9 +25,9 @@ class SubmitJob {
 			}
 		}
 		
-		def java = System.getenv('JAVA') ?: '/scratch/scarano.s/bin/runjava.sh'
+		def java = System.getenv('JAVA') ?: '/scratch/scarano/bin/runjava.sh'
 		
-		def processes = (int) (1 + parallel)
+		def processes = (int) parallel
 		
 		def timeStr = new SimpleDateFormat("yyyy-MM-dd-HHmmss").format(new Date())
 		def newConfig = new File(outputDir, timeStr + "-config.txt")
@@ -45,10 +46,11 @@ class SubmitJob {
 		}
 
 		def command =
-			"$java ocr.Evaluator " +
+			"$java edu.neu.ccs.headword.Evaluator " +
 				"${newConfig.getAbsolutePath()} $parallel"
 		if (bsub)
-			command = "bsub -R $processes*{mem>60000} -n $processes -q ser-par-10g " +
+			// -R $processes*{mem>60000}
+			command = "bsub -R \"span[ptile=$processes]\" -n $processes -q $queue " +
 				"-J eval-$timeStr " +
 				"-o ${outputDir.getAbsolutePath()}/${timeStr}.out " + command
 

@@ -123,66 +123,34 @@ for c in 100 150 200; do
   done;
 done
 
+
+
+
 # -- combined clustering, with ABBYY OCR and PTB tokenization (v8) --------------
 
-# Start by copying v7/clustering
+cp -a v4/{channelmodel,ocr-corpus} v8
+cp -a v6/{wwp,clustering,ptb,grammar,srilm} v8
 
-mkdir grammar
+cd grammar
+for x in train.1to10.ip.retok.*; do ln -s $x train.1to10.${x#train.1to10.ip.retok.}; done
+for x in train.1to999.ip.retok.*; do ln -s $x train.1to999.${x#train.1to999.ip.retok.}; done
 
 # CE training with combined clustering
-for c in 100 150 200; do for s in 4to10; do for n in error trans; do f=model.prose.$s.c$c.ce$n.unif; date; time $JAVA edu.neu.ccs.headword.DMVCE clustering/prose.train.$s.c$c.txt -vocab clustering/combined-c$c-p1.out/vocab.txt -hood $n -parallel 2 grammar/$f. 0 800  >grammar/$f.log ; done ; done; done; date
-for c in 100 150 200; do for s in 4to10; do for n in error trans; do f=model.prose.$s.c$c.ce$n.har; date; time $JAVA edu.neu.ccs.headword.DMVCE clustering/prose.train.$s.c$c.txt -vocab clustering/combined-c$c-p1.out/vocab.txt -hood $n -parallel 2 grammar/$f. -input-model harmonic 0 800  >grammar/$f.log ; done ; done; done; date
+for c in 100 150 200; do for s in 4to10; do for n in error trans; do f=model.prose.$s.cc$c.ce$n.unif; date; time $JAVA edu.neu.ccs.headword.DMVCE clustering/prose.train.$s.c$c.txt -vocab clustering/combined-c$c-p1.out/vocab.txt -hood $n -parallel 2 grammar/$f. 0 800 >grammar/$f.log 2>grammar/$f.err ; done ; done; done; date
+for c in 100 150 200; do for s in 4to10; do for n in error trans; do f=model.prose.$s.cc$c.ce$n.har; date; time $JAVA edu.neu.ccs.headword.DMVCE clustering/prose.train.$s.c$c.txt -vocab clustering/combined-c$c-p1.out/vocab.txt -hood $n -parallel 2 grammar/$f. -input-model harmonic 0 800  >grammar/$f.log 2>grammar/$f.err; done ; done; done; date
 
+# Symlinks to make more consistent with EM files
+for c in 100 150 200; do for n in error trans; do for i in har unif; do ln -s model.prose.4to10.cc$c.ce$n.$i.dmv wwp.4to10.cc$c.ce$n.$i.dmv; done; done; done
 
-####
-####
+# Estimate counts from log-linear CE model
+for c in 100 150 200; do for s in 4to10 ; do for n in cetrans.unif cetrans.har ceerror.unif ceerror.har; do m=wwp.$s.cc$c.$n; o=$m.cnt; echo $o; $JAVA edu.neu.ccs.headword.LatticeParser -string -model grammar/$m.dmv  clustering/prose.train.$s.c$c.txt  -min-length 4 -max-length 10 -clustering clustering/combined-c$c-p1.out/paths -reestimate grammar/$o -quiet & done; done; done
 
-# Train DMV structured tag language models with EM (several minutes)
-# (Note that PTB-trained models are already trained by ptb/train.sh.)
-mkdir grammar
-for c in 100 150 200; do for min in 1 4; do d=wwp.${min}to10.cc$c.em.har; $JAVA ocr.DMVEM wwp/prose.train.1to15.deh.txt -min-length $min -max-length 10 -input-model harmonic grammar/$d. 1 999 -epsilon 1e-5 -clustering clustering/combined-c$c-p1.out/paths & done; done
-# I decided to make symlinks for the PTB-trained models:
-cd grammar
-ln -s ../ptb/models/train.1to*cc*.em*.cnt  .
-cd ..
+# Count lexical dependencies using parses from DMV/CE
+for c in 100 150 200; do for s in 4to10; do for l in 50; do for n in trans.unif trans.har error.unif error.har; do m=wwp.$s.cc$c.ce$n; o=$m.1to$l.tagalpha1.v.lcnt; bsub -n 1  -q  ser-par-10g -J $o -o grammar/$o.log $JAVA edu.neu.ccs.headword.LatticeParser -string -counts grammar/$m.cnt  wwp/prose.train.1to$l.deh.txt  -tag-smoothing 1 -clustering clustering/combined-c$c-p1.out/paths   -estimate-lex grammar/$o -viterbi  -quiet; done; done; done ; done
 
-# Create right-branching-only DMV:
-for c in 100 150 200; do m=train.1to10.ip.retok.cc$c.rb; o=$m.cnt;  $JAVA ocr.LatticeParser -string -right-branching -counts ptb/models/train.1to10.ip.retok.cc$c.em.har.cnt  wwp/prose.train.1to15.deh.txt -min-length 1 -max-length 10 -tag-smoothing 1 -clustering clustering/combined-c150-p1.out/paths  -reestimate grammar/$o   -quiet & done
-for c in 100 150 200 ; do for l in 50; do m=train.1to10.ip.retok.cc$c.rb; o=$m.1to$l.tagalpha1.v.lcnt;  $JAVA ocr.LatticeParser -string -right-branching -counts grammar/$m.cnt  wwp/prose.train.1to$l.deh.txt  -tag-smoothing 1 -clustering clustering/combined-c$c-p1.out/paths   -estimate-lex grammar/$o -viterbi  -quiet & done; done
-#oops, i put those in the wrong dir, created symlinks to fix:
-cd ptb/models; ln -s ../../grammar/train.1to*cnt .
+# Produce arc length counts:
+$JAVA edu.neu.ccs.headword.scripts.ArcLengthDistributions -text wwp/prose.train.1to30.deh.10000.txt -counts grammar/train.1to10.cc150.em.har.cnt -lex-counts grammar/train.1to10.cc150.em.har.1to50.tagalpha1.v.lcnt -lambda 0.5 -tag-smoothing 1 -clustering clustering/combined-c150-p1.out/paths -min-length 5 -max-length 15
 
-# Train supervised model (also done by ptb/train.sh)
-for c in 100 150 200; do for l in 10 999; do  $JAVA ocr.LatticeParser  -supervised-training train.1to999.ip.retok.parses -clustering ../clustering/combined-c$c-p1.out/paths -max-length $l  -reestimate models/train.1to$l.ip.retok.cc$c.em.super.cnt; done; done
-
-# Count lexical dependencies using parses from DMV/EM on PTB
-for c in 100 150 200; do
-  for l in 50; do
-    m=train.1to10.ip.retok.cc$c.em.har;
-    o=$m.1to$l.tagalpha1.v.lcnt;
-    bsub -n 1  -q  ser-par-10g -J $o -o grammar/$o.log $JAVA ocr.LatticeParser -string -counts ptb/models/$m.cnt  wwp/prose.train.1to$l.deh.txt  -tag-smoothing 1 -clustering clustering/combined-c$c-p1.out/paths   -estimate-lex grammar/$o -viterbi  -quiet;
-  done;
-done
-# Count lexical dependencies using parses from supervised parser
-for c in 100 150 200; do
-  for cl in 10 999; do
-    l=50
-    m=train.1to$cl.ip.retok.cc$c.em.super;
-    o=$m.1to$l.tagalpha1.v.lcnt;
-    bsub -n 1  -q  ser-par-10g -J $o -o grammar/$o.log $JAVA ocr.LatticeParser -string -counts ptb/models/$m.cnt  wwp/prose.train.1to$l.deh.txt  -tag-smoothing 1 -clustering clustering/combined-c$c-p1.out/paths   -estimate-lex grammar/$o -viterbi  -quiet;
-  done;
-done
-# Count lexical dependencies using parses from DMV/EM on WWP
-for c in 100 150 200; do
-  for l in 50; do
-    for min in 1 4; do
-      m=wwp.${min}to10.cc$c.em.har;
-      o=$m.1to$l.tagalpha1.v.lcnt;
-#      bsub -n 1  -q  ser-par-10g -J $o -o grammar/$o.log  \
-      $JAVA ocr.LatticeParser -string -counts grammar/$m.cnt  wwp/prose.train.1to$l.deh.txt  -tag-smoothing 1 -clustering clustering/combined-c$c-p1.out/paths   -estimate-lex grammar/$o -viterbi  -quiet;
-    done
-  done;
-done
 
 # -- version 3 --------------
 

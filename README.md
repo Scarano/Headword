@@ -14,19 +14,21 @@ It uses the Dependency Model with Valence (Klein and Manning, 2004) to estimate 
 
 The Headword parser seems to be many times faster than [Dageem](https://github.com/shaybcohen/jdageem) by Shay Cohen, both in training and parsing (not sure why). Dageem, however, includes support for minimum Bayes risk decoding (mine only does Viterbi). Embarrassingly, Headword depends on the Dageem jar because it uses Dageem's implementation of the DMV's "harmonic" initializer, to save me the trouble of duplicating and testing that logic.
 
+Another performance note: Most of the time is spent computing logs and exponents, which the JVM does just as fast as glibc, so performance is about as good as a C implementation on CPU hardware. \[ 2021 note: NOT that I would advocate using Java for numeric computation — especially in 2021! \]
+
 ### Usage
 
-This is an Eclipse project. I haven't yet set it up to compile with Ant or Gradle or whatever the coolest new build tool is. The required dependencies are in `lib`. Like I said, it's one-off research code.
+This is an Eclipse project. I haven't yet set it up to compile with Gradle, sorry. The required dependencies are in `lib`. Like I said, it's one-off research code.
 
 (*TODO: Update this with examples of training and parsing.*)
 
 ## The rest of the OCR error correction system
 
 I don't currently plan to spend time documenting this stuff because:
- 1. Honestly, modern OCR software already has decent language modeling for commonly-used languages baked in, so for your typical practical OCR needs, the marginal utility of a post-processing system like this is small.
+ 1. Modern OCR software already has decent language modeling for commonly-used languages baked in, so a post-processing system like this is really only useful when the text is of a particular dialect (or of a domain with an idiosyncratic style) that the OCR doesn't have a model for.
  2. This particular system is complicated and therefore difficult to use. There are a lot of hyperparameters.
 
-However, if you have text data with OCR errors _and_ an error-free training corpus that is better-matched to the OCR text than the OCR system's language model training, then _maybe_ Headword will be of use to you. In that case, feel free to get in touch for assistance.
+However, _if_ you have text data with OCR errors _and_ an error-free training corpus that is better-matched to the OCR text than the OCR system's language model training, then Headword may well be of use to you. In that case, feel free to get in touch for assistance.
 
 ## License
 
